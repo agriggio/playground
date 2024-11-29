@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - releases
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check github ref
+        run: |
+          echo "GITHUB_REF = <$GITHUB_REF>"
+          echo "GITHUB_REF_TYPE = <$GITHUB_REF_TYPE>"
