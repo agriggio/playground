@@ -13,5 +13,6 @@ jobs:
     steps:
       - name: Check github ref
         run: |
-          echo "GITHUB_REF = <$GITHUB_REF>"
-          echo "GITHUB_REF_TYPE = <$GITHUB_REF_TYPE>"
+          echo "GITHUB_REF = <${GITHUB_REF}>"
+          echo "GITHUB_REF_TYPE = <${GITHUB_REF_TYPE}>"
+          echo "GITHUB_REF_NAME = <${GITHUB_REF_NAME}>"
