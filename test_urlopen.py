@@ -14,8 +14,10 @@ from urllib.error import HTTPError
 
 
 def get_imageio_releases():
+    headers = None
     with urlopen(
             'https://api.github.com/repos/artpixls/ART-imageio/releases') as f:
+        headers = f.headers
         data = f.read().decode('utf-8')
     rel = json.loads(data)
     def key(r):
@@ -32,6 +34,8 @@ def get_imageio_releases():
                         return asset['browser_download_url']
             return None
 
+    print(f'GOT HEADERS:\n{headers}')
+    sys.stdout.flush()
     return RelInfo(rel)
 
 
