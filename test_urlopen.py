@@ -10,6 +10,7 @@ import glob
 import json
 import time
 import platform
+from urllib.error import HTTPError
 
 
 def get_imageio_releases():
@@ -35,19 +36,24 @@ def get_imageio_releases():
 
 
 def main():
-    imageio = get_imageio_releases()
-    with urlopen(imageio.asset('ART-imageio.tar.gz')) as f:
-        print('downloading ART-imageio.tar.gz from GitHub ...')
-        tf = tarfile.open(fileobj=io.BytesIO(f.read()))
-        print('unpacking ART-imageio.tar.gz ...')
-        tf.extractall('.')
-    arch = 'arm64' if platform.machine() == 'x86_64' else 'arm64'
-    name = f'ART-imageio-bin-macOS-' + arch
-    with urlopen(imageio.asset(f'{name}.tar.gz')) as f:
-        print(f'downloading {name}.tar.gz from GitHub ...')
-        tf = tarfile.open(fileobj=io.BytesIO(f.read()))
-        print(f'unpacking {name} ...')
-        tf.extractall('.')
+    try:
+        imageio = get_imageio_releases()
+        with urlopen(imageio.asset('ART-imageio.tar.gz')) as f:
+            print('downloading ART-imageio.tar.gz from GitHub ...')
+            tf = tarfile.open(fileobj=io.BytesIO(f.read()))
+            print('unpacking ART-imageio.tar.gz ...')
+            tf.extractall('.')
+        arch = 'arm64' if platform.machine() == 'x86_64' else 'arm64'
+        name = f'ART-imageio-bin-macOS-' + arch
+        with urlopen(imageio.asset(f'{name}.tar.gz')) as f:
+            print(f'downloading {name}.tar.gz from GitHub ...')
+            tf = tarfile.open(fileobj=io.BytesIO(f.read()))
+            print(f'unpacking {name} ...')
+            tf.extractall('.')
+    except HTTPError as e:
+        print(f'HTTP ERROR: {e.reason}')
+        print(f'HEDERS:\n{e.headers}')
+        raise
 
 
 if __name__ == '__main__':
