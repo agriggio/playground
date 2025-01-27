@@ -58,6 +58,8 @@ jobs:
 
       - if: ${{ vars.URLOPEN == 'true' }}
         name: Test urlopen
+        env:
+          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
         run: |
           /usr/bin/python3 --version
           /usr/bin/python3 repo/test_urlopen.py

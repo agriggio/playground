@@ -2,7 +2,7 @@ import os, sys
 import shutil
 import subprocess
 import argparse
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 import tarfile
 import tempfile
 import io
@@ -13,10 +13,15 @@ import platform
 from urllib.error import HTTPError
 
 
-def get_imageio_releases():
+def get_imageio_releases(auth=None):
     headers = None
-    with urlopen(
-            'https://api.github.com/repos/artpixls/ART-imageio/releases') as f:
+    req = Request('https://api.github.com/repos/artpixls/ART-imageio/releases')
+    if auth is not None:
+        req.add_header('authorization', 'Bearer ' + auth)
+        print(f'AUTH IS: {auth}')
+    else:
+        print('NO AUTH GIVEN')
+    with urlopen(req) as f:
         headers = f.headers
         data = f.read().decode('utf-8')
     rel = json.loads(data)
@@ -31,7 +36,10 @@ def get_imageio_releases():
             for rel in self.rels:
                 for asset in rel['assets']:
                     if asset['name'] == name:
-                        return asset['browser_download_url']
+                        res = Request(asset['browser_download_url'])
+                        if auth is not None:
+                            res.add_header('authorization', 'Bearer ' + auth)
+                        return res
             return None
 
     print(f'GOT HEADERS:\n{headers}')
@@ -41,7 +49,7 @@ def get_imageio_releases():
 
 def main():
     try:
-        imageio = get_imageio_releases()
+        imageio = get_imageio_releases(os.getenv('GITHUB_AUTH'))
         with urlopen(imageio.asset('ART-imageio.tar.gz')) as f:
             print('downloading ART-imageio.tar.gz from GitHub ...')
             tf = tarfile.open(fileobj=io.BytesIO(f.read()))
