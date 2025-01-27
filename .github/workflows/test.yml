@@ -16,13 +16,15 @@ jobs:
         with:
           path: repo
 
-      - name: Install MacPorts arm64
+      - if: false
+        name: Install MacPorts arm64
         run: |          
           wget https://github.com/macports/macports-base/releases/download/v2.10.4/MacPorts-2.10.4-14-Sonoma.pkg
           sudo installer -pkg MacPorts-2.10.4-14-Sonoma.pkg -target /
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
           
-      - name: Install base ports
+      - if: false
+        name: Install base ports
         run: |          
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
           sudo port install pkgconfig
@@ -47,4 +49,5 @@ jobs:
 
       - name: Test urlopen
         run: |
-          python repo/test_urlopen.py
+          /usr/bin/python3 --version
+          /usr/bin/python3 repo/test_urlopen.py
