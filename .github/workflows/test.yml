@@ -2,6 +2,11 @@ name: Test
 
 on:
   workflow_dispatch:
+    inputs:
+      use_curl:
+        description: 'Use CURL'
+        required: true
+        type: boolean
 
 jobs:
   test:
@@ -47,7 +52,7 @@ jobs:
           sudo port install meson
           sudo port install dbus
 
-      - if: ${{ vars.CURL == 'true' }}
+      - if: ${{ inputs.use_curl == 'true' }}
         name: Test CURL
         run: |
           curl -o out.json \
@@ -56,7 +61,7 @@ jobs:
           echo "GOT JSON:"
           cat out.json
 
-      - if: ${{ vars.URLOPEN == 'true' }}
+      - if: ${{ inputs.use_curl == 'false' }}
         name: Test urlopen
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
