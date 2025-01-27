@@ -47,7 +47,7 @@ jobs:
           sudo port install meson
           sudo port install dbus
 
-      - if: ${{ vars.CURL == "true" && vars.RUN == "true" }}
+      - if: ${{ vars.CURL == 'true' && vars.RUN == 'true' }}
         name: Test CURL
         run: |
           curl -o out.json https://api.github.com/repos/artpixls/ART-imageio/releases
