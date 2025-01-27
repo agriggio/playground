@@ -1,6 +1,7 @@
 name: Test
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       use_curl:
@@ -20,6 +21,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: repo
+
+      - name: Test inputs on push
+        run: |
+          echo "INPUTS ON PUSH: use_curl = ${{ inputs.use_curl }}"
 
       - if: false
         name: Install MacPorts arm64
