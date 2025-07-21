@@ -3,11 +3,6 @@ name: Test Windows arm64
 on:
   push:
   workflow_dispatch:
-    inputs:
-      use_curl:
-        description: 'Use CURL'
-        required: true
-        type: boolean
 
 jobs:
   build:
@@ -27,8 +22,7 @@ jobs:
         run: |
           choco install innosetup      
           
-      - if: ${{ inputs.use_curl == 'true' }}
-        name: Test CURL
+      - name: Test CURL
         run: |
           curl -o out.json \
             --url https://api.github.com/repos/artpixls/ART-imageio/releases \
@@ -36,8 +30,7 @@ jobs:
           echo "GOT JSON:"
           cat out.json
 
-      - if: ${{ inputs.use_curl == 'false' }}
-        name: Test urlopen
+      - name: Test urlopen
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
         run: |
