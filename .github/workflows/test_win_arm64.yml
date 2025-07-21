@@ -32,7 +32,7 @@ jobs:
           cat out.json
 
       - name: Test urlopen
-        shell: cmd
+        shell: pwsh
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
         run: |
