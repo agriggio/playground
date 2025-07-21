@@ -23,6 +23,7 @@ jobs:
           choco install innosetup      
           
       - name: Test CURL
+        shell: bash
         run: |
           curl -o out.json \
             --url https://api.github.com/repos/artpixls/ART-imageio/releases \
