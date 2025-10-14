@@ -55,7 +55,7 @@ jobs:
       - name: Install local pkgs
         run: |
           pacman -Sy
-          for p in clang cmake autotools ninja gtkmm lcms2 fftw lensfun mimalloc opencolorio; do
+          for p in clang cmake autotools ninja gtkmm3 lcms2 fftw lensfun mimalloc opencolorio; do
               pacman --noconfirm -S custom-clangarm64/mingw-w64-clang-aarch64-${p}
           done
 
