@@ -37,3 +37,6 @@ jobs:
         run: |
           otool -L /usr/local/opt/opencolorio/lib/libOpenColorIO.2.5.dylib
 
+      - name: Check expat lib
+        run: |
+          ls -l /usr/local/opt/expat/lib/libexpat.1.dylib
