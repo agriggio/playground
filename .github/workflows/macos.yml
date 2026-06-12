@@ -1,0 +1,39 @@
+name: macOS Builds (with Homebrew)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+        
+    runs-on: macos-15-intel
+
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: repo
+
+      - name: Get OS version
+        run: |
+          echo "OS_VERSION=$(sw_vers -productVersion | cut -d . -f 1,2)" >> $GITHUB_ENV
+
+      - name: Install base packages
+        run: |          
+          brew install \
+          	opencolorio \
+                expat
+
+      - name: Check expat
+        run: |
+          brew list expat
+
+      - name: Check opencolorio
+        run: |
+          otool -L /usr/local/opt/homebrew/lib/libOpenColorIO.dylib
+
